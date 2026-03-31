@@ -1,16 +1,41 @@
-﻿using System.Diagnostics.Metrics;
+using System.Diagnostics.Metrics;
+using System.IO;
 
-Console.Write("Путь к файлу с массивом:");
-string input = Console.ReadLine();
+if (args.Length < 1)
+{
+    Console.WriteLine("Ошибка: не указан путь к файлу");
+    return;
+}
+
+string input = args[0];
 List<int> nums = [];
 int counter = 0;
+
+if (!File.Exists(input))
+{
+    Console.WriteLine("Файл не найден");
+    return;
+}
 
 
 string[] inputNums = File.ReadAllLines(input);
 for (int i = 0; i < inputNums.Length; i++)
 {
-    nums.Add(int.Parse(inputNums[i]));
+    string currentLine = inputNums[i].Trim();
+    if (!int.TryParse(currentLine, out int inputnumber))
+    {
+        Console.WriteLine("Ошибка: файл содержит нечисловые значения");
+        return;
+    }
+    nums.Add(inputnumber);
 }
+
+if (nums.Count == 0)
+{
+    Console.WriteLine("Массив не содержит чисел");
+    return;
+}
+
 nums.Sort();
 
 
@@ -37,7 +62,7 @@ else
     }
 }
 
-if (counter < 20)
+if (counter <= 20)
 {
     Console.WriteLine(counter);
 }
